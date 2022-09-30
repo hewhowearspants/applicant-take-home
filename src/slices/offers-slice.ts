@@ -1,9 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 // Define a type for the slice state
 export interface OffersState {
     offers?: PrizeoutOffers;
+    selectedOffer?: PrizeoutOffer;
 }
 
 // Define the initial state
@@ -642,6 +643,7 @@ export const offersInitialState: OffersState = {
           type: 'vertical-offers'
         }
       ],
+    selectedOffer: null,
 };
 
 type PrizeoutOffers = PrizeoutOfferViews[];
@@ -686,9 +688,22 @@ type OffersRequest = {
 export const offersSlice = createSlice({
     initialState: offersInitialState,
     name: 'offers',
-    reducers: {},
+    reducers: {
+        setSelectedOffer(state, action: PayloadAction<PrizeoutOffer>) {
+            const selectedId = state.selectedOffer?.giftcard_list[0].checkout_value_id;
+            const payloadId = action.payload.giftcard_list[0].checkout_value_id;
+            if (selectedId !== payloadId) {
+                state.selectedOffer = action.payload;
+            } else {
+                state.selectedOffer = null;
+            }
+        },
+    },
 });
 
+export const { setSelectedOffer } = offersSlice.actions;
+
 export const selectOffers = ({ offers }: RootState): PrizeoutOffers => offers.offers;
+export const selectSelectedOffer = ({ offers }: RootState): PrizeoutOffer => offers.selectedOffer;
 
 export default offersSlice.reducer;

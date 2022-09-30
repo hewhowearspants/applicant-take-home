@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Classnames from 'classnames';
-import { PrizeoutOffer, PrizeoutOfferSettings } from '../../../../../slices/offers-slice';
+import { AppDispatch } from '../../../../../store';
+import { PrizeoutOffer, PrizeoutOfferSettings, setSelectedOffer } from '../../../../../slices/offers-slice';
 import { OfferGiftCard } from '../offer-gift-card/offer-gift-card';
 
 import './vertical-offers.less';
@@ -11,14 +13,17 @@ interface OfferView {
 }
 
 const VerticalOffers: React.FC<OfferView> = ({ offers, viewSettings }): React.ReactElement => {
+    const dispatch = useDispatch<AppDispatch>();
     const heading = viewSettings.title || 'Recommended';
     const subtitle = viewSettings.subtitle || null;
     const classes: string = Classnames('vertical-offers', { '--has-subtitle': subtitle });
 
-    const offerClickHandler = (offer: PrizeoutOffer) => {};
+    const offerClickHandler = (offer: PrizeoutOffer) => {
+        dispatch(setSelectedOffer(offer));
+    };
 
     const returnOffers = () => {
-        return offers.map((offer) => (
+        return offers.map((offer: PrizeoutOffer) => (
             <OfferGiftCard
                 key={`${heading}-${offer.name}`}
                 offer={offer}
