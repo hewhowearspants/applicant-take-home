@@ -53,7 +53,9 @@ const CheckoutPanelView: React.FC = (): React.ReactElement => {
                     <Button
                         ariaLabel={`Select ${offerValueInDollars} Option`}
                         onClick={() => cardClickHandler(giftCardOption)}
-                        text={selectedCard?.checkout_value_id === giftCardOption.checkout_value_id ? "Selected" : "Select"}
+                        text={
+                            selectedCard?.checkout_value_id === giftCardOption.checkout_value_id ? 'Selected' : 'Select'
+                        }
                         color="primary"
                         type="submit"
                         size="medium"
