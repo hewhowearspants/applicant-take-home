@@ -1,8 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Classnames from 'classnames';
 import { AppDispatch } from '../../../../../store';
-import { PrizeoutOffer, PrizeoutOfferSettings, setSelectedOffer } from '../../../../../slices/offers-slice';
+import {
+    PrizeoutOffer,
+    PrizeoutOfferSettings,
+    setSelectedCard,
+    setSelectedOffer,
+    selectSelectedOffer,
+} from '../../../../../slices/offers-slice';
 import { OfferGiftCard } from '../offer-gift-card/offer-gift-card';
 
 import './vertical-offers.less';
@@ -14,12 +20,20 @@ interface OfferView {
 
 const VerticalOffers: React.FC<OfferView> = ({ offers, viewSettings }): React.ReactElement => {
     const dispatch = useDispatch<AppDispatch>();
+    const selectedOffer = useSelector(selectSelectedOffer);
     const heading = viewSettings.title || 'Recommended';
     const subtitle = viewSettings.subtitle || null;
     const classes: string = Classnames('vertical-offers', { '--has-subtitle': subtitle });
 
     const offerClickHandler = (offer: PrizeoutOffer) => {
-        dispatch(setSelectedOffer(offer));
+        const selectedId = selectedOffer?.giftcard_list[0].checkout_value_id;
+        const offerId = offer.giftcard_list[0].checkout_value_id;
+        if (selectedId !== offerId) {
+            dispatch(setSelectedOffer(offer));
+        } else {
+            dispatch(setSelectedOffer(null));
+            dispatch(setSelectedCard(null));
+        }
     };
 
     const returnOffers = () => {

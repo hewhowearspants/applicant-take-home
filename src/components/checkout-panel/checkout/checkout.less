@@ -1,9 +1,19 @@
 @import "../../../utils/styles/utility.less";
+@import '../../../utils/styles/mixins.less';
 
 .checkout {
 	&__brand { // Top section
 		padding: var(--space-inner);
 		overflow: auto;
+	}
+	.offer-details {
+		.offer-name {
+			font-size: var(--font-size-m);
+		}
+	}
+	.gift-card-option {
+		.flexbox(@justifyContent: space-between, @alignItems: center);
+		margin: 16px 0px;
 	}
 }
 
